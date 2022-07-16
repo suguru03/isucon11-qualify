@@ -1,2 +1,5 @@
 webapp/go/tmp/
 .idea
+
+bench/images
+.DS_Store

@@ -3,12 +3,27 @@
 ## How to setup local env
 
 ```sh
-curl https://github.com/isucon/isucon11-qualify/releases/download/public/1_InitData.sql > webapp/sql/1_InitData.sql
+# curlでうまくとれなかったので、これをダウンロードしてwebapp/sqlに移動
+https://github.com/isucon/isucon11-qualify/releases/download/public/1_InitData.sql
 
+# curlでうまくとれなかったので、これをダウンロードしてbench/data/initialize.jsonに移動
+https://github.com/isucon/isucon11-qualify/releases/download/public/initialize.json
+
+# imagesもbench/imagesに展開
+https://github.com/isucon/isucon11-qualify/releases/download/public/images.tgz
+
+## Run go server
 ## よくわからん
-export POST_ISUCONDITION_TARGET_BASE_URL=http://localhost:3000
-
+export POST_ISUCONDITION_TARGET_BASE_URL=http://localhost:3001
 cd webapp/go
+go run main.go
+
+## Run go benchmark
+cd bench/go
+go generate ./gen/assets.go 
+export JIA_SERVICE_URL=http://localhost:3001
+export ISUXBENCH_TARGET=localhost:3000
+export ISUXBENCH_ALL_ADDRESSES=localhost:3000 # csv
 go run main.go
 ```
 
