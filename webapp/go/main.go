@@ -2,11 +2,13 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"crypto/ecdsa"
 	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/go-redis/redis/v8"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -44,6 +46,7 @@ const (
 
 var (
 	db                  *sqlx.DB
+	cdb                 *redis.Client
 	sessionStore        sessions.Store
 	mySQLConnectionData *MySQLConnectionEnv
 
@@ -193,6 +196,14 @@ func (mc *MySQLConnectionEnv) ConnectDB() (*sqlx.DB, error) {
 	return sqlx.Open("mysql", dsn)
 }
 
+func newRedis() *redis.Client {
+	return redis.NewClient(&redis.Options{
+		Addr:     getEnv("REDIS_ADDR", "127.0.0.1:6379"),
+		Password: "",
+		DB:       0,
+	})
+}
+
 func init() {
 	sessionStore = sessions.NewCookieStore([]byte(getEnv("SESSION_KEY", "isucondition")))
 
@@ -246,6 +257,9 @@ func main() {
 	}
 	db.SetMaxOpenConns(10)
 	defer db.Close()
+
+	cdb = newRedis()
+	defer cdb.Close()
 
 	postIsuConditionTargetBaseURL = os.Getenv("POST_ISUCONDITION_TARGET_BASE_URL")
 	if postIsuConditionTargetBaseURL == "" {
@@ -330,6 +344,7 @@ func postInitialize(c echo.Context) error {
 		c.Logger().Errorf("db error : %v", err)
 		return c.NoContent(http.StatusInternalServerError)
 	}
+	cdb.FlushAll(context.TODO())
 
 	return c.JSON(http.StatusOK, InitializeResponse{
 		Language: "go",
