@@ -1,0 +1,61 @@
+version: "3.7"
+services:
+  app:
+    image: node:14.17.5-alpine
+    volumes:
+      - ./:/var/app
+    working_dir: /var/app/webapp/nodejs
+    command: sh run_local.sh
+    ports:
+      - 3030:8080
+  mysql5:
+    image: mysql:5.7.35
+    ports:
+      - 3306:3306
+    volumes:
+      - ./sql:/var/sql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_USER=isucon
+      - MYSQL_PASSWORD=isucon
+      - MYSQL_DATABASE=isucondition
+    networks:
+      - overlay
+  mysql8:
+    image: mysql:8.0.23
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_USER=isucon
+      - MYSQL_PASSWORD=isucon
+      - MYSQL_DATABASE=isucondition
+    networks:
+      - overlay
+  maria:
+    image: mariadb:10.6.4
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_USER=isucon
+      - MYSQL_PASSWORD=isucon
+      - MYSQL_DATABASE=isucondition
+    networks:
+      - overlay
+  redis:
+    image: redis:6.2.5
+    ports:
+     - 6379:6379
+    networks:
+      - overlay
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 3001:3001
+    networks:
+      - overlay
+networks:
+  overlay:

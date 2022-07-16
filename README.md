@@ -1,5 +1,17 @@
 # isucon11-qualify
 
+## How to setup local env
+
+```sh
+curl https://github.com/isucon/isucon11-qualify/releases/download/public/1_InitData.sql > webapp/sql/1_InitData.sql
+
+## よくわからん
+export POST_ISUCONDITION_TARGET_BASE_URL=http://localhost:3000
+
+cd webapp/go
+go run main.go
+```
+
 ## ディレクトリ構成
 
 ```
