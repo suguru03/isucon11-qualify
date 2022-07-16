@@ -12,9 +12,17 @@ https://github.com/isucon/isucon11-qualify/releases/download/public/initialize.j
 # imagesもbench/imagesに展開
 https://github.com/isucon/isucon11-qualify/releases/download/public/images.tgz
 
-## Run go server
+## Run servers
+
 ## よくわからん
 export POST_ISUCONDITION_TARGET_BASE_URL=http://localhost:3001
+
+## Run Node.js server
+cd webapp/nodejs
+npm install
+npm run dev
+
+## Run Go server
 cd webapp/go
 go run main.go
 
