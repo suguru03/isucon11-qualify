@@ -3,6 +3,8 @@
 ## How to setup local env
 
 ```sh
+# 各windowでulimitを上げる必要がある
+ulimit -n unlimited
 # curlでうまくとれなかったので、これをダウンロードしてwebapp/sqlに移動
 https://github.com/isucon/isucon11-qualify/releases/download/public/1_InitData.sql
 
