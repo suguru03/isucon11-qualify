@@ -3,15 +3,9 @@
 ## How to setup local env
 
 ```sh
-# 各windowでulimitを上げる必要がある
+
 ulimit -n unlimited
-# curlでうまくとれなかったので、これをダウンロードしてwebapp/sqlに移動
-https://github.com/isucon/isucon11-qualify/releases/download/public/1_InitData.sql
-
-# curlでうまくとれなかったので、これをダウンロードしてbench/data/initialize.jsonに移動
-https://github.com/isucon/isucon11-qualify/releases/download/public/initialize.json
-
-# imagesもbench/imagesに展開
+# imagesをbench/imagesに展開
 https://github.com/isucon/isucon11-qualify/releases/download/public/images.tgz
 
 ## Run servers
