@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS `isu_association_config`;
 DROP TABLE IF EXISTS `isu_condition`;
 DROP TABLE IF EXISTS `isu`;
 DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `characters`;
 
 CREATE TABLE `isu` (
   `id` bigint AUTO_INCREMENT,
@@ -12,7 +13,8 @@ CREATE TABLE `isu` (
   `jia_user_id` VARCHAR(255) NOT NULL,
   `created_at` DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
   `updated_at` DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-   PRIMARY KEY(`id`)
+  INDEX(`jia_isu_uuid`, `jia_user_id`),
+  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8mb4;
 
 CREATE TABLE `isu_condition` (
@@ -21,8 +23,11 @@ CREATE TABLE `isu_condition` (
   `timestamp` DATETIME NOT NULL,
   `is_sitting` TINYINT(1) NOT NULL,
   `condition` VARCHAR(255) NOT NULL,
+  `condition_type` TINYINT(3),
+  `condition_level` VARCHAR(255),
   `message` VARCHAR(255) NOT NULL,
   `created_at` DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
+  INDEX (`jia_isu_uuid`, `timestamp`),
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8mb4;
 
@@ -34,4 +39,8 @@ CREATE TABLE `user` (
 CREATE TABLE `isu_association_config` (
   `name` VARCHAR(255) PRIMARY KEY,
   `url` VARCHAR(255) NOT NULL UNIQUE
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8mb4;
+
+CREATE TABLE `characters` (
+  `character` VARCHAR(255) PRIMARY KEY
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8mb4;
